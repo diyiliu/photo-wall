@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>照片墙</title>
+    <style type="text/css">
+        #images{
+            width: 1024px;
+            height: 400px;
+            margin: 50px auto;
+            perspective: 500px;
+        }
+        #images img{
+            width: 96px;
+            height: 132px;
+            float: left;
+        }
+
+        #btn{
+            width: 100px;
+            text-align: center;
+            font: 16px/40px "微软雅黑";
+            color: #ffffff;
+            background-color: rgb(0, 100, 0);
+            padding: 0 20px;
+            margin: 0 auto;
+            cursor: pointer;
+            border-radius:5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+<div id="images">
+    <img src="img/13.gif"/>
+    <img src="img/13.jpg"/>
+    <img src="img/23.gif"/>
+    <img src="img/23.jpg"/>
+    <img src="img/63.gif"/>
+    <img src="img/73.jpg"/>
+    <img src="img/83.jpg"/>
+    <img src="img/113.gif"/>
+    <img src="img/113.jpg"/>
+    <img src="img/123.gif"/>
+    <img src="img/123.jpg"/>
+    <img src="img/133.jpg"/>
+    <img src="img/173.gif"/>
+    <img src="img/173.jpg"/>
+    <img src="img/183.gif"/>
+    <img src="img/183.jpg"/>
+    <img src="img/193.jpg"/>
+    <img src="img/203.gif"/>
+    <img src="img/203.jpg"/>
+    <img src="img/223.jpg"/>
+    <img src="img/233.jpg"/>
+    <img src="img/263.gif"/>
+    <img src="img/263.jpg"/>
+    <img src="img/283.gif"/>
+    <img src="img/283.jpg"/>
+    <img src="img/293.gif"/>
+    <img src="img/293.jpg"/>
+    <img src="img/03.jpg"/>
+    <img src="img/02.jpg"/>
+    <img src="img/01.jpg"/>
+</div>
+<div id="btn">查看动态图片</div>
+
+<script type="application/javascript">
+    var imgs = document.querySelectorAll("img");
+    var btn = document.getElementById("btn");
+
+    var on = false;
+    btn.onclick = function () {
+        if (on){
+            return;
+        }
+        on = true;
+        var num = 0;
+        for(var i = 0; i < imgs.length; i++) {
+            (function (i) {
+                setTimeout(function () {
+                    motion(imgs[i], "10ms", function () {
+                        this.style.transform = "scale(0)";
+                    }, function () {
+                       motion(this, "1s", function () {
+                           this.style.transform = "scale(1)";
+                           this.style.opacity = "0";
+                       }, function () {
+                           num++;
+                           if (num == imgs.length){
+                               toBig();
+                           }
+                       })
+                    });
+                }, Math.random() * 1000)
+            })(i);
+        }
+    }
+
+    function toBig() {
+        var num = 0;
+        for(var i = 0; i < imgs.length; i++) {
+            imgs[i].style.transition = "";
+            imgs[i].style.transform = "rotateY(0deg) translateZ(-" + Math.random()*500 + "px)";
+
+            (function (i) {
+                setTimeout(function () {
+                    motion(imgs[i], "2s", function () {
+                        this.style.opacity = "1";
+                        this.style.transform = "rotateY(-360deg) translateZ(0)";
+                    }, function () {
+                        num++;
+                        if (num == imgs.length){
+                            on = false;
+                        }
+                    });
+                }, Math.random()*1000);
+            })(i);
+        }
+    }
+
+
+    function motion(obj, time, doFn, callBack) {
+        obj.style.transition = time;
+        doFn.call(obj);
+
+        var called = false;
+        obj.addEventListener("transitionend", function () {
+            if (!called){
+                callBack && callBack.call(obj);
+                called = true;
+            }
+        },false);
+    }
+</script>
+</body>
+</html>
